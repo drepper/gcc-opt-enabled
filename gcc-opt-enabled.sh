@@ -122,7 +122,7 @@ format_value() {
     elif [ "$v" == '[enabled]' ]; then
         printf " %b%*s%b " "$greenfg" $(($w + yesstrlen - 1)) "$yesstr" "$off"
     else
-        printf "%b%*s%b" "$greenfg" $(($w + 2)) "$v" "$off"
+        printf "%b%*s%b " "$greenfg" $(($w + 1)) "$v" "$off"
     fi
 }
 

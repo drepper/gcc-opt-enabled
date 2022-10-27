@@ -7,7 +7,8 @@ if [ -t 1 ]; then
     redbg="\e[41;30;1m"
     greenfg="\e[32m"
     greenbg="\e[42;30;1m"
-    bluebg="\e[44;30;1m"
+    bluebg="\e[44m"
+    darkfg="\e[30;1m"
     off="\e[0m"
     disa="\e[9;2m"
 else
@@ -68,7 +69,7 @@ compiler() {
     ${CC:-gcc} -c -Q -O$level --help=optimizers |
     sed '/^[[:blank:]]*[^-[:blank:]]/d;/^[[:blank:]]*-[^f]/d;/^[[:blank:]]*$/d;s/=/ /' |
     sort |
-    awk 'BEGIN { noopt["-fopt-info"]=1; noopt["-fshort-wchar"]=1; noopt["-fsave-optimization-record"]=1; noopt["-fpack-struct"]=1; noopt["-fstack-check"]=1; noopt["-flive-patching"]=1 } { if (NF>1 && noopt[$1] == "") { if (prev != "" && prev != $1) print(prevline); else { if (val == "[disabled]" || $2 == "[enabled]") next; } prev=$1; val=$2; prevline=$0 } } END { print(prevline) }'
+    awk 'BEGIN { noopt["-fopt-info"]=1; noopt["-fshort-wchar"]=1; noopt["-fsave-optimization-record"]=1; noopt["-fpack-struct"]=1; noopt["-fstack-check"]=1; noopt["-flive-patching"]=1; noopt["-fasynchronous-unwind-tables"]=1 } { if (NF>1 && noopt[$1] == "") { if (prev != "" && prev != $1) print(prevline); else { if (val == "[disabled]" || $2 == "[enabled]") next; } prev=$1; val=$2; prevline=$0 } } END { print(prevline) }'
     if [ $hasdummy -eq 0 -a -f $helpdummy ]; then
         rm $helpdummy
     fi
@@ -106,11 +107,11 @@ show_header() {
     local longest=$1
     local w=$2
 
-    printf "%*s" $longest ""
+    printf "%*s%b" $longest "" "$bluebg"
     for o in ${flags[*]}; do
-        printf "│%b %*s %b" "$bluebg" "$w" "$o" "$off"
+        printf "│%b %*s %b" "$darkfg" "$w" "$o" "$off$bluebg"
     done
-    printf "│\n"
+    printf "│%b\n" "$off"
 }
 
 format_value() {

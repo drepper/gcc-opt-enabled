@@ -26,7 +26,7 @@ nostrlen=${#nostr}
 yesstr="✔"
 yesstrlen=${#yesstr}
 
-w=8
+w=11
 
 declare -a flags=(0 g 1 s 2 3 fast)
 
